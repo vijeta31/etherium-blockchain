@@ -1,0 +1,173 @@
+<html>
+<head>
+    <title> Student Marks</title>
+    <script src="./node_modules/web3/dist/web3.min.js"></script>
+</head>
+<body bgcolor=blue>
+    <h2 id="msg"></h2>
+    <form action="#" method="POST">
+    <div id="assign_marks">
+        <input id ="rollno" type="text" placeholder="Enter Roll No"/></br>
+        <input id = "subname" type="text" placeholder="Enter Sub Name"/></br>
+        <input id = "marks" type="text" placeholder="Marks"/></br>
+        <input id = "button" type="button" value="Submit"/>
+    </div>
+    </form>
+    <form action="#" method = "GET">
+        <div id="display">
+        <input id = "s_number" type = "text" placeholder="Enter roll number"/></br>
+        <input id = "s_button" type="button" value="Submit"/> 
+   </div>
+    </form>
+
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+
+    <script>
+       // var Web3 = require('web3');
+
+if (typeof web3 !== 'undefined') {
+ web3 = new Web3(web3.currentProvider);
+} else {
+ // set the provider you want from Web3.providers
+ web3 = new Web3(new Web3.providers.HttpProvider("http://localhost:8545"));
+}
+
+    web3.eth.defaultAccount = web3.eth.accounts[0];
+ var abi = [
+	{
+		"constant": false,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "stu_id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "sub_name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "mrk",
+				"type": "uint256"
+			}
+		],
+		"name": "assign_marks",
+		"outputs": [],
+		"payable": false,
+		"stateMutability": "nonpayable",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "stu_id",
+				"type": "uint256"
+			}
+		],
+		"name": "display_marks",
+		"outputs": [
+			{
+				"components": [
+					{
+						"internalType": "uint256",
+						"name": "id",
+						"type": "uint256"
+					},
+					{
+						"internalType": "string",
+						"name": "sub_name",
+						"type": "string"
+					},
+					{
+						"internalType": "uint256",
+						"name": "mark",
+						"type": "uint256"
+					}
+				],
+				"internalType": "struct marks.stu[]",
+				"name": "",
+				"type": "tuple[]"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	},
+	{
+		"constant": true,
+		"inputs": [
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			},
+			{
+				"internalType": "uint256",
+				"name": "",
+				"type": "uint256"
+			}
+		],
+		"name": "list",
+		"outputs": [
+			{
+				"internalType": "uint256",
+				"name": "id",
+				"type": "uint256"
+			},
+			{
+				"internalType": "string",
+				"name": "sub_name",
+				"type": "string"
+			},
+			{
+				"internalType": "uint256",
+				"name": "mark",
+				"type": "uint256"
+			}
+		],
+		"payable": false,
+		"stateMutability": "view",
+		"type": "function"
+	}
+];
+
+var Student_data = new web3.eth.Contract(abi,'0xcd7be55a2bab791e501747e096b39467b8561cfd');
+//var stu_var = web3.eth.at('0xcd7be55a2bab791e501747e096b39467b8561cfd');
+//var stu_var = Student_data.at('0xcd7be55a2bab791e501747e096b39467b8561cfd');
+//Student_data.
+//var stu_var = web3.eth.at('0xcd7be55a2bab791e501747e096b39467b8561cfd');
+console.log(Student_data);
+
+//console.log(s_marks);
+/*Student_data["methods"].assign_marks(roll_no,s_name,s_marks)
+{
+ document.getElementById("msg").innerHTML = "Data inserted...!";
+}
+ */
+$("#button").click(function()
+
+{
+ // document.getElementById("msg").innerHTML ="Data inserted...!";
+
+Student_data["methods"].assign_marks($("#rollno").val(),$("subname").val(),$("marks").val());
+document.getElementById("msg").innerHTML = "Roll No" + ' '+ $("#rollno").val() + ' ' + "data inserted successfully...!";
+//document.getElementById("msg").innerHTML ="Data inserted...!";
+});
+
+//var roll = $("#s_number").val();
+$("#s_button").click(function()
+{
+var data = Student_data["methods"].display_marks($("#s_number").val());
+//console.log(Student_data["methods"].display_marks($("#s_number").val()));
+document.getElementById("msg").innerHTML = data[0,1];
+});
+
+
+    </script>
+
+</body>
+</html>
